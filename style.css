@@ -1,0 +1,814 @@
+/* ===== Reset & Base ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial,
+    sans-serif;
+  background: #f5f6fa;
+  color: #333;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ===== Site Header ===== */
+.site-header {
+  background: linear-gradient(90deg, #111827, #123c69);
+  padding: 20px 24px;
+  text-align: center;
+}
+
+.site-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 4px 0;
+  letter-spacing: 1px;
+}
+
+.site-subtitle {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ===== Tab Bar ===== */
+.tab-bar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 2px solid #e0e0e0;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  border: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.tab-btn:hover {
+  color: #333;
+}
+
+.tab-btn.active {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
+}
+
+/* ===== Top Bar ===== */
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 42px;
+  z-index: 100;
+  font-size: 13px;
+}
+
+.top-bar-left {
+  font-weight: 600;
+  color: #555;
+  min-width: 120px;
+}
+
+.top-bar-center {
+  font-weight: 500;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.top-bar-right {
+  min-width: 120px;
+  text-align: right;
+}
+
+.update-time {
+  color: #999;
+  font-size: 12px;
+}
+
+/* ===== Filter Controls ===== */
+.filter-label {
+  color: #666;
+  font-size: 13px;
+  margin-right: 2px;
+}
+
+.filter-sep {
+  color: #999;
+  font-size: 13px;
+}
+
+.date-input {
+  padding: 4px 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+}
+
+.date-input:focus {
+  border-color: #4f8ef7;
+  box-shadow: 0 0 0 2px rgba(79, 142, 247, 0.15);
+}
+
+.quick-btns {
+  display: flex;
+  gap: 4px;
+  margin-left: 10px;
+}
+
+.quick-btn {
+  padding: 4px 10px;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  background: #fff;
+  color: #555;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.quick-btn:hover {
+  background: #f0f4ff;
+  border-color: #4f8ef7;
+  color: #4f8ef7;
+}
+
+.quick-btn.active {
+  background: #4f8ef7;
+  border-color: #4f8ef7;
+  color: #fff;
+}
+
+/* ===== Table Wrapper ===== */
+.table-wrapper {
+  overflow-x: auto;
+  background: #fff;
+  margin: 0;
+}
+
+/* ===== Table ===== */
+#data-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  min-width: 1600px;
+}
+
+#data-table thead {
+}
+
+#data-table th {
+  position: static;
+  top: auto;
+  background: #fafafa;
+  border: 1px solid #e8e8e8;
+  padding: 8px 6px;
+  font-weight: 600;
+  font-size: 12px;
+  text-align: center;
+  white-space: nowrap;
+  color: #444;
+  line-height: 1.3;
+}
+
+#data-table th .unit {
+  font-weight: 400;
+  font-size: 10px;
+  color: #999;
+}
+
+#data-table td {
+  border: 1px solid #ececec;
+  padding: 7px 8px;
+  text-align: right;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ===== Column widths ===== */
+.col-date { width: 100px; }
+.col-period { width: 56px; }
+.col-rate { width: 80px; }
+.col-blue, .col-purple, .col-gov, .col-orange { width: 110px; }
+
+/* ===== Column header colors ===== */
+th.col-blue {
+  background: #e8f0fe !important;
+  color: #1a56db;
+}
+
+th.col-purple {
+  background: #f0e8f8 !important;
+  color: #7c3aed;
+}
+
+th.col-gov {
+  background: #fde8e8 !important;
+  color: #c53030;
+}
+
+th.col-orange {
+  background: #fff3e0 !important;
+  color: #d97706;
+}
+
+th.col-rate {
+  background: #f0f7ff !important;
+  color: #2563eb;
+}
+
+/* ===== Row striping ===== */
+#data-table tbody tr:nth-child(even) {
+  background: #fafbfd;
+}
+
+#data-table tbody tr:nth-child(odd) {
+  background: #fff;
+}
+
+#data-table tbody tr:hover {
+  background: #f0f4ff !important;
+}
+
+/* ===== Cell text alignment ===== */
+td.cell-date {
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+}
+
+td.cell-period {
+  text-align: center;
+  color: #666;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Period tag pill styles */
+td.period-tag-月初 {
+  color: #c05621;
+  background: #fff7ed;
+}
+
+td.period-tag-月底 {
+  color: #6d28d9;
+  background: #f3f0ff;
+}
+
+td.period-tag-普通 {
+  color: #888;
+  background: transparent;
+}
+
+/* Date cell left border by period */
+td.period-月初 {
+  border-left: 3px solid #ed8936;
+}
+
+td.period-月底 {
+  border-left: 3px solid #7c3aed;
+}
+
+td.period-普通 {
+  border-left: 3px solid #e5e7eb;
+}
+
+td.cell-rate {
+  text-align: right;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+td.cell-blue {
+  text-align: right;
+  color: #1a56db;
+  font-weight: 500;
+  background: rgba(232, 240, 254, 0.3);
+}
+
+td.cell-purple {
+  text-align: right;
+  color: #7c3aed;
+  font-weight: 500;
+  background: rgba(240, 232, 248, 0.3);
+}
+
+td.cell-gov {
+  text-align: right;
+  color: #c53030;
+  font-weight: 500;
+  border-left: 3px solid #e53e3e;
+}
+
+td.cell-orange {
+  text-align: right;
+  color: #d97706;
+  font-weight: 500;
+  background: rgba(255, 243, 224, 0.4);
+}
+
+/* ===== Arrows ===== */
+.arrow-up {
+  color: #e53e3e;
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+.arrow-down {
+  color: #38a169;
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+.arrow-neutral {
+  color: #999;
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+/* ===== N/A / Empty ===== */
+.cell-na {
+  color: #ccc;
+  text-align: center;
+}
+
+/* ===== Responsive scrollbar hint ===== */
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 4px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+/* ===== Loading state ===== */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-size: 15px;
+}
+
+/* ===== Data Bar (Heatmap) ===== */
+td.has-bar {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.data-bar {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  bottom: 2px;
+  border-radius: 3px;
+  z-index: 0;
+  transition: width 0.3s ease;
+  pointer-events: none;
+}
+
+.data-bar.bar-blue {
+  background: rgba(59, 130, 246, 0.13);
+}
+
+.data-bar.bar-purple {
+  background: rgba(124, 58, 237, 0.12);
+}
+
+.data-bar.bar-gov {
+  background: rgba(239, 68, 68, 0.10);
+}
+
+.data-bar.bar-gov-neg {
+  background: rgba(20, 184, 166, 0.12);
+}
+
+.data-bar.bar-orange {
+  background: rgba(245, 158, 11, 0.13);
+}
+
+td.has-bar .cell-value {
+  position: relative;
+  z-index: 1;
+}
+
+td.has-bar .arrow-up,
+td.has-bar .arrow-down,
+td.has-bar .arrow-neutral {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Seasonal Chart Tab ===== */
+.seasonal-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #e8e8e8;
+  flex-wrap: wrap;
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  white-space: nowrap;
+}
+
+.year-btns {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.year-btn {
+  padding: 4px 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  background: #fff;
+  color: #555;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.year-btn:hover {
+  border-color: #4f8ef7;
+  color: #4f8ef7;
+}
+
+.year-btn.active {
+  background: #4f8ef7;
+  border-color: #4f8ef7;
+  color: #fff;
+}
+
+.reset-btn {
+  padding: 5px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  background: #fff;
+  color: #555;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.reset-btn:hover {
+  background: #f5f5f5;
+  border-color: #999;
+}
+
+/* X-axis range select controls */
+.range-select {
+  padding: 4px 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  outline: none;
+  cursor: pointer;
+  min-width: 72px;
+}
+
+.range-select:focus {
+  border-color: #4f8ef7;
+  box-shadow: 0 0 0 2px rgba(79, 142, 247, 0.15);
+}
+
+.range-sep {
+  color: #999;
+  font-size: 12px;
+}
+
+/* Chart card */
+.seasonal-content {
+  padding: 20px 24px;
+}
+
+.chart-group {
+  margin-bottom: 24px;
+}
+
+.chart-group-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12px;
+  padding-left: 4px;
+  border-left: 3px solid #2563eb;
+  padding: 4px 0 4px 12px;
+}
+
+.seasonal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(520px, 1fr));
+  gap: 16px;
+}
+
+.chart-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.chart-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 380px;
+}
+
+.section-note {
+  margin: 10px 2px 0;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* ===== Liquidity Table ===== */
+.liquidity-table-section {
+  margin-bottom: 24px;
+}
+
+.liquidity-table-wrapper {
+  overflow-x: auto;
+}
+
+.liquidity-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.liquidity-table thead th {
+  background: #dc2626;
+  color: #fff;
+  border: 1px solid #b91c1c;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.liquidity-table thead tr:first-child th {
+  font-size: 13px;
+}
+
+.liquidity-table tbody td {
+  border: 1px solid #e8e8e8;
+  padding: 8px 12px;
+  font-size: 13px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.liquidity-table tbody td:first-child {
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+  background: #fafafa;
+}
+
+.liquidity-table tbody tr:nth-child(even) {
+  background: #fafbfd;
+}
+
+.liquidity-table tbody tr:hover {
+  background: #f0f4ff;
+}
+
+.liquidity-table .positive {
+  color: #dc2626;
+}
+
+.liquidity-table .negative {
+  color: #16a34a;
+}
+
+/* ===== Gov Bond Interactive Controls ===== */
+.gov-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.gov-header .chart-title {
+  margin-bottom: 0;
+}
+
+.gov-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.gov-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.gov-ctrl-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.gov-select {
+  font-size: 12px;
+  padding: 4px 8px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.gov-select:hover,
+.gov-select:focus {
+  border-color: #3b82f6;
+}
+
+.gov-btn {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 14px;
+  border: 1px solid #d0d5dd;
+  border-radius: 6px;
+  background: #f8fafc;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.gov-btn:hover {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.gov-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.gov-table-wrap {
+  margin-top: 12px;
+  max-height: 420px;
+  overflow-y: auto;
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+}
+
+.gov-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gov-table thead th {
+  background: #2563eb;
+  color: #fff;
+  border: 1px solid #1d4ed8;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.gov-table tbody td {
+  border: 1px solid #e8e8e8;
+  padding: 6px 12px;
+  font-size: 13px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.gov-table tbody td:first-child {
+  text-align: center;
+  font-weight: 500;
+  color: #333;
+  background: #fafafa;
+}
+
+.gov-table tbody tr:nth-child(even) {
+  background: #fafbfd;
+}
+
+.gov-table tbody tr:hover {
+  background: #f0f4ff;
+}
+
+.gov-table .positive {
+  color: #dc2626;
+}
+
+.gov-table .negative {
+  color: #16a34a;
+}
+
+/* ===== 政府债月度净融资（及预期）热力图表格 ===== */
+.gov-nf-wrap {
+  max-height: none;
+}
+
+.gov-nf-table tbody td {
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+/* ===== Leverage Charts ===== */
+.leverage-group .chart-container {
+  height: 420px;
+}
+
+/* ===== CD Net Financing (发行/到期/净融资额 三图联动) ===== */
+.cdnf-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cdnf-metric-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+  margin: 2px 0 4px;
+}
+
+.cdnf-chart {
+  height: 300px;
+}
+
+.cdnf-muted {
+  color: #b6bec9;
+}

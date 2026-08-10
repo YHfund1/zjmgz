@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>资金面数据看板</title>
+  <link rel="stylesheet" href="style.css?v=trend-20260624" />
+</head>
+<body>
+  <!-- Site Header -->
+  <header class="site-header">
+    <h1 class="site-title">资金面跟踪</h1>
+    <p class="site-subtitle">数据来源：iFinD、CFETS</p>
+  </header>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="table">资金面数据表</button>
+    <button class="tab-btn" data-tab="seasonal">季节性图表</button>
+  </div>
+
+  <!-- ========== Tab: 资金面数据表 ========== -->
+  <div id="tab-table" class="tab-content">
+    <!-- Top summary bar -->
+    <div class="top-bar">
+      <div class="top-bar-left"> 
+        <span id="total-count">共 0 条</span>
+      </div>
+      <div class="top-bar-center filter-area">
+        <span class="filter-label">显示</span>
+        <input type="date" id="date-start" class="date-input" />
+        <span class="filter-sep">至</span>
+        <input type="date" id="date-end" class="date-input" />
+        <div class="quick-btns">
+          <button class="quick-btn" data-action="30d">最近30天</button>
+          <button class="quick-btn" data-action="90d">最近90天</button>
+          <button class="quick-btn active" data-action="350">最近350条</button>
+          <button class="quick-btn" data-action="all">全部</button>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <span class="update-time" id="update-time"></span>
+      </div>
+    </div>
+
+    <!-- Table container -->
+    <div class="table-wrapper">
+      <table id="data-table">
+        <thead>
+          <tr>
+            <th class="col-date">日期</th>
+            <th class="col-period">时段</th>
+            <th class="col-rate">R001 (%)</th>
+            <th class="col-rate">DR001 (%)</th>
+            <th class="col-rate">R007 (%)</th>
+            <th class="col-rate">DR007 (%)</th>
+            <th class="col-blue">大型银行净融出<br/><span class="unit">亿元</span></th>
+            <th class="col-blue">中小银行净融出<br/><span class="unit">亿元</span></th>
+            <th class="col-blue">理财+货基净融出<br/><span class="unit">亿元</span></th>
+            <th class="col-purple">全市场正回购<br/><span class="unit">亿元</span></th>
+            <th class="col-gov">政府债净缴款<br/><span class="unit">亿元</span></th>
+            <th class="col-orange">OMO存量<br/><span class="unit">亿元</span></th>
+            <th class="col-orange">买断式逆回购<br/><span class="unit">亿元</span></th>
+            <th class="col-orange">MLF余额<br/><span class="unit">亿元</span></th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ========== Tab: 季节性图表 ========== -->
+  <div id="tab-seasonal" class="tab-content" style="display:none">
+    <div class="seasonal-controls">
+      <div class="control-group">
+        <label class="control-label">年份</label>
+        <div id="year-selector" class="year-btns"></div>
+      </div>
+      <div class="control-group">
+        <button id="seasonal-reset" class="reset-btn">重置</button>
+      </div>
+    </div>
+
+    <div class="seasonal-content">
+      <!-- Group 1: 资金利率 -->
+      <div class="chart-group">
+        <h2 class="chart-group-title">资金利率</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">R001 季节性对比 (%)</h3>
+            <div class="chart-container" id="chart-R001"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">DR001 季节性对比 (%)</h3>
+            <div class="chart-container" id="chart-DR001"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">R007 季节性对比 (%)</h3>
+            <div class="chart-container" id="chart-R007"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">DR007 季节性对比 (%)</h3>
+            <div class="chart-container" id="chart-DR007"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">R007-DR007利差 季节性对比（%）</h3>
+            <div class="chart-container" id="chart-R007-DR007"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">FR007利率互换与资金利差</h3>
+            <div class="chart-container" id="chart-fr007-combo"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">同业存单到期收益率</h3>
+            <div class="chart-container" id="chart-cd-yield"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 2: 融入融出结构 -->
+      <div class="chart-group">
+        <h2 class="chart-group-title">融入融出结构</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">大型银行净融出 季节性对比 (亿元)</h3>
+            <div class="chart-container" id="chart-large-bank"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">中小银行净融出 季节性对比 (亿元)</h3>
+            <div class="chart-container" id="chart-small-bank"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">理财+货基净融出 季节性对比 (亿元)</h3>
+            <div class="chart-container" id="chart-wm-mf"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">全市场正回购 季节性对比 (亿元)</h3>
+            <div class="chart-container" id="chart-total-repo"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 3: 中长期流动性投放 (table, no dataZoom) -->
+      <section class="liquidity-table-section">
+        <h2 class="chart-group-title">中长期流动性投放</h2>
+        <div class="liquidity-table-wrapper chart-card">
+          <table id="medium-long-liquidity-table" class="liquidity-table">
+            <thead id="liquidity-thead"></thead>
+            <tbody id="liquidity-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Group 4: 流动性工具存量情况 -->
+      <div class="chart-group">
+        <h2 class="chart-group-title">流动性工具存量情况</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">OMO存量 季节性对比 (亿元)</h3>
+            <div class="chart-container" id="chart-OMO"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">买断式逆回购与MLF余额 趋势图（亿元）</h3>
+            <div class="chart-container" id="chart-buyout-repo"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">MDSMLF 趋势图（亿元）</h3>
+            <div class="chart-container" id="chart-MDSMLF"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 5: 政府债净融资 -->
+      <div class="chart-group">
+        <h2 class="chart-group-title">政府债净融资</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <div class="gov-header">
+              <h3 class="chart-title" id="gov-chart-title">政府债净缴款 周度时序柱状图 (亿元)</h3>
+              <div class="gov-controls">
+                <div class="gov-ctrl">
+                  <span class="gov-ctrl-label">频率</span>
+                  <select id="gov-freq" class="gov-select">
+                    <option value="day">日</option>
+                    <option value="week" selected>周</option>
+                    <option value="month">月</option>
+                    <option value="quarter">季</option>
+                  </select>
+                </div>
+                <div class="gov-ctrl">
+                  <span class="gov-ctrl-label">图类型</span>
+                  <select id="gov-charttype" class="gov-select">
+                    <option value="bar" selected>时序柱状图</option>
+                    <option value="seasonal">季节折线图</option>
+                  </select>
+                </div>
+                <button id="gov-table-toggle" class="gov-btn" type="button">数据表</button>
+              </div>
+            </div>
+            <div class="chart-container" id="chart-gov-bond"></div>
+            <div class="gov-table-wrap" id="gov-table-wrap" style="display:none;">
+              <table class="gov-table">
+                <thead id="gov-thead"></thead>
+                <tbody id="gov-tbody"></tbody>
+              </table>
+            </div>
+            <p class="section-note">当前周期净缴款为周期首日至今日累计值、随着时间推移而不断补充。</p>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">政府债月度净融资（及预期）（亿元）</h3>
+            <div class="gov-table-wrap gov-nf-wrap" id="gov-monthly-nf-wrap">
+              <table class="gov-table gov-nf-table">
+                <thead id="gov-monthly-nf-thead"></thead>
+                <tbody id="gov-monthly-nf-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 6: 票据利率 -->
+      <div class="chart-group">
+        <h2 class="chart-group-title">票据利率</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">票据利率（1M）季节性对比（%）</h3>
+            <div class="chart-container" id="chart-bill-rate-1m"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">票据利率（6M）季节性对比（%）</h3>
+            <div class="chart-container" id="chart-bill-rate-6m"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Group 6b: 同业存单发行与净融资（发行/到期/净融资额 三图联动） -->
+      <div class="chart-group">
+        <h2 class="chart-group-title">同业存单发行与净融资</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <div class="gov-header">
+              <h3 class="chart-title" id="cdnf-chart-title">同业存单发行与净融资 周度时序柱状图 (亿元)</h3>
+              <div class="gov-controls">
+                <div class="gov-ctrl">
+                  <span class="gov-ctrl-label">频率</span>
+                  <select id="cdnf-freq" class="gov-select">
+                    <option value="day">日</option>
+                    <option value="week" selected>周</option>
+                    <option value="month">月</option>
+                    <option value="quarter">季</option>
+                  </select>
+                </div>
+                <div class="gov-ctrl">
+                  <span class="gov-ctrl-label">图类型</span>
+                  <select id="cdnf-charttype" class="gov-select">
+                    <option value="bar" selected>时序柱状图</option>
+                    <option value="seasonal">季节折线图</option>
+                  </select>
+                </div>
+                <button id="cdnf-table-toggle" class="gov-btn" type="button">数据表</button>
+              </div>
+            </div>
+
+            <div class="cdnf-stack">
+              <div class="cdnf-metric">
+                <div class="cdnf-metric-title">发行（亿元）</div>
+                <div class="chart-container cdnf-chart" id="chart-cdnf-issue"></div>
+              </div>
+              <div class="cdnf-metric">
+                <div class="cdnf-metric-title">到期（亿元）</div>
+                <div class="chart-container cdnf-chart" id="chart-cdnf-mature"></div>
+              </div>
+              <div class="cdnf-metric">
+                <div class="cdnf-metric-title">净融资额（亿元）</div>
+                <div class="chart-container cdnf-chart" id="chart-cdnf-net"></div>
+              </div>
+            </div>
+
+            <div class="gov-table-wrap" id="cdnf-table-wrap" style="display:none;">
+              <table class="gov-table">
+                <thead id="cdnf-thead"></thead>
+                <tbody id="cdnf-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <p class="section-note">同业存单发行与净融资额在最新一期的数据将随时间变化而不断补充，到期额则为完整数据。</p>
+      </div>
+
+      <!-- Group 7: 杠杆热度监测 (time series, not seasonal) -->
+      <section class="chart-group leverage-group">
+        <h2 class="chart-group-title">杠杆热度监测</h2>
+        <div class="seasonal-grid">
+          <div class="chart-card">
+            <h3 class="chart-title">隔夜成交占比</h3>
+            <div class="chart-container" id="chart-overnight-share"></div>
+          </div>
+          <div class="chart-card">
+            <h3 class="chart-title">银行间质押式回购成交量/120日均值</h3>
+            <div class="chart-container" id="chart-repo-volume-ratio"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ECharts CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <script src="script.js?v=axis-zorder-20260625"></script>
+</body>
+</html>

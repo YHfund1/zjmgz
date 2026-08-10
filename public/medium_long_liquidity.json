@@ -1,0 +1,216 @@
+{
+  "headers": [
+    {
+      "key": "date",
+      "label": "月份",
+      "group": ""
+    },
+    {
+      "key": "invest_3m",
+      "label": "3M买断式",
+      "group": "投放"
+    },
+    {
+      "key": "invest_6m",
+      "label": "6M买断式",
+      "group": "投放"
+    },
+    {
+      "key": "invest_1y",
+      "label": "1YMLF",
+      "group": "投放"
+    },
+    {
+      "key": "mature_3m",
+      "label": "3M买断式",
+      "group": "到期"
+    },
+    {
+      "key": "mature_6m",
+      "label": "6M买断式",
+      "group": "到期"
+    },
+    {
+      "key": "mature_1y",
+      "label": "1YMLF",
+      "group": "到期"
+    },
+    {
+      "key": "net_total",
+      "label": "合计",
+      "group": "净投放"
+    }
+  ],
+  "data": [
+    {
+      "date": "2026-08",
+      "invest_3m": 5000,
+      "invest_6m": null,
+      "invest_1y": null,
+      "mature_3m": 3000,
+      "mature_6m": 10000,
+      "mature_1y": 6000,
+      "net_total": null
+    },
+    {
+      "date": "2026-07",
+      "invest_3m": 10000,
+      "invest_6m": 14000,
+      "invest_1y": 5000,
+      "mature_3m": 8000,
+      "mature_6m": 9000,
+      "mature_1y": 4000,
+      "net_total": 8000
+    },
+    {
+      "date": "2026-06",
+      "invest_3m": 5000,
+      "invest_6m": 6000,
+      "invest_1y": 5000,
+      "mature_3m": 8000,
+      "mature_6m": 6000,
+      "mature_1y": 3000,
+      "net_total": -1000
+    },
+    {
+      "date": "2026-05",
+      "invest_3m": 3000,
+      "invest_6m": 3000,
+      "invest_1y": 6000,
+      "mature_3m": 8000,
+      "mature_6m": 8000,
+      "mature_1y": 5000,
+      "net_total": -9000
+    },
+    {
+      "date": "2026-04",
+      "invest_3m": 8000,
+      "invest_6m": 5000,
+      "invest_1y": 4000.0,
+      "mature_3m": 11000,
+      "mature_6m": 6000,
+      "mature_1y": 6000,
+      "net_total": -6000
+    },
+    {
+      "date": "2026-03",
+      "invest_3m": 8000,
+      "invest_6m": 5000,
+      "invest_1y": 5000,
+      "mature_3m": 10000,
+      "mature_6m": 6000,
+      "mature_1y": 4500,
+      "net_total": -2500
+    },
+    {
+      "date": "2026-02",
+      "invest_3m": 8000,
+      "invest_6m": 10000,
+      "invest_1y": 6000,
+      "mature_3m": 7000,
+      "mature_6m": 5000,
+      "mature_1y": 3000,
+      "net_total": 9000
+    },
+    {
+      "date": "2026-01",
+      "invest_3m": 11000,
+      "invest_6m": 9000,
+      "invest_1y": 9000,
+      "mature_3m": 11000,
+      "mature_6m": 6000,
+      "mature_1y": 2000,
+      "net_total": 10000
+    },
+    {
+      "date": "2025-12",
+      "invest_3m": 10000,
+      "invest_6m": 6000,
+      "invest_1y": 4000.0,
+      "mature_3m": 10000,
+      "mature_6m": 4000,
+      "mature_1y": 3000,
+      "net_total": 3000
+    },
+    {
+      "date": "2025-11",
+      "invest_3m": 7000,
+      "invest_6m": 8000,
+      "invest_1y": 10000,
+      "mature_3m": 7000,
+      "mature_6m": 3000,
+      "mature_1y": 9000,
+      "net_total": 6000
+    },
+    {
+      "date": "2025-10",
+      "invest_3m": 11000,
+      "invest_6m": 6000,
+      "invest_1y": 9000,
+      "mature_3m": 8000,
+      "mature_6m": 5000,
+      "mature_1y": 7000,
+      "net_total": 6000
+    },
+    {
+      "date": "2025-09",
+      "invest_3m": 10000,
+      "invest_6m": 6000,
+      "invest_1y": 6000,
+      "mature_3m": 10000,
+      "mature_6m": 3000,
+      "mature_1y": 3000,
+      "net_total": 6000
+    },
+    {
+      "date": "2025-08",
+      "invest_3m": 7000,
+      "invest_6m": 5000,
+      "invest_1y": 6000,
+      "mature_3m": 4000,
+      "mature_6m": 5000,
+      "mature_1y": 3000,
+      "net_total": 6000
+    },
+    {
+      "date": "2025-07",
+      "invest_3m": 8000,
+      "invest_6m": 6000,
+      "invest_1y": 4000.0,
+      "mature_3m": 7000,
+      "mature_6m": 5000,
+      "mature_1y": 3000,
+      "net_total": 3000
+    },
+    {
+      "date": "2025-06",
+      "invest_3m": 10000,
+      "invest_6m": 4000,
+      "invest_1y": 3000,
+      "mature_3m": 5000,
+      "mature_6m": 7000,
+      "mature_1y": 1820,
+      "net_total": 3180
+    },
+    {
+      "date": "2025-05",
+      "invest_3m": 4000,
+      "invest_6m": 3000,
+      "invest_1y": 5000,
+      "mature_3m": 9000,
+      "mature_6m": 0,
+      "mature_1y": 1250,
+      "net_total": 1750
+    },
+    {
+      "date": "2025-04",
+      "invest_3m": 7000,
+      "invest_6m": 5000,
+      "invest_1y": 6000,
+      "mature_3m": 12000,
+      "mature_6m": 5000,
+      "mature_1y": 1000,
+      "net_total": 0
+    }
+  ]
+}
