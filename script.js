@@ -577,6 +577,7 @@ function getYearBorderWidth(year, latestYear) {
         loadBillRates();
         loadCDRates();
         loadCDNetFinancing();
+        loadGovDailyNF();
         loadGovMonthlyNF();
       } else {
         renderAllSeasonalCharts();
@@ -793,6 +794,25 @@ function getYearBorderWidth(year, latestYear) {
   var govTableVisible = false;
   var GOV_FREQ_NAMES = { day: '\u65e5\u5ea6', week: '\u5468\u5ea6', month: '\u6708\u5ea6', quarter: '\u5b63\u5ea6' };
 
+  // 政府债净缴款日度源数据（日度资金情况汇总.xlsx -> 政府债净缴款 sheet）
+  var govDailyData = null; // [{日期, 净缴款}, ...]
+
+  function loadGovDailyNF() {
+    fetch('public/gov_daily_net_payment.json')
+      .then(function (resp) {
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        return resp.json();
+      })
+      .then(function (data) {
+        govDailyData = data;
+        renderGovBondChart();
+        if (govTableVisible) renderGovBondTable();
+      })
+      .catch(function (err) {
+        console.warn('Gov daily net payment load failed:', err.message);
+      });
+  }
+
   function govPad2(n) { return n < 10 ? '0' + n : '' + n; }
 
   function govParseDate(s) {
@@ -803,10 +823,11 @@ function getYearBorderWidth(year, latestYear) {
     return d.getFullYear() + '-' + govPad2(d.getMonth() + 1) + '-' + govPad2(d.getDate());
   }
 
-  // 返回日期 d 所在自然周（周一至周日）的周五
+  // 返回日期 d 所属政府债统计周（上周六至本周五）的周五（周末日期）。
+  // 例：2026-08-08(周六) 至 2026-08-14(周五) 归入同一周，横轴按 2026-08-14 显示。
   function govWeekFriday(d) {
-    var monIdx = (d.getDay() + 6) % 7; // Mon=0 ... Sun=6
-    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + (4 - monIdx));
+    var add = (5 - d.getDay() + 7) % 7; // 周日+5 ... 周五+0，周六+6
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + add);
   }
 
   // 某个周五在其所属年份中的序号（0=该年第一个周五）
@@ -816,13 +837,28 @@ function getYearBorderWidth(year, latestYear) {
     return Math.round(Math.round((fri - d) / 86400000) / 7);
   }
 
-  // 将日频底层数据按指定频率聚合为政府债净缴款
+  // 周频最新显示周的周五：默认为今天所在统计周（周六-周五）的周五；
+  // 若今天是周五（本周数据已完整），则向后多显示一周（下周周五）。
+  function govLastWeeklyFriday() {
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var fri = govWeekFriday(today);
+    if (today.getDay() === 5) fri.setDate(fri.getDate() + 7);
+    return govDateToStr(fri);
+  }
+
+  // 将日频底层数据按指定频率聚合为政府债净缴款。
+  // 数据源：govDailyData（日度资金情况汇总.xlsx -> 政府债净缴款 sheet，A列日期/G列净缴款）。
+  // 周频口径：上周六至本周五为一周，横轴按周五日期标记；仅显示至今天所在周，
+  // 若今天为周五则额外显示下一周；更远未来的排期数据不显示。
   function aggregateGovBond(freq) {
     var map = {};
-    for (var i = 0; i < allData.length; i++) {
-      var r = allData[i];
+    if (!govDailyData) return [];
+    var lastFriStr = (freq === 'week') ? govLastWeeklyFriday() : null;
+    for (var i = 0; i < govDailyData.length; i++) {
+      var r = govDailyData[i];
       var dateStr = r['\u65e5\u671f'];
-      var val = r[GOV_KEY];
+      var val = r['\u51c0\u7f34\u6b3e'];
       if (!dateStr || val === null || val === undefined) continue;
       var key, sortKey, label;
       if (freq === 'day') {
@@ -830,6 +866,7 @@ function getYearBorderWidth(year, latestYear) {
         label = dateStr.replace(/-/g, '/');
       } else if (freq === 'week') {
         var friStr = govDateToStr(govWeekFriday(govParseDate(dateStr)));
+        if (friStr > lastFriStr) continue; // 截断超出显示范围的未来周
         key = sortKey = friStr;
         label = friStr.replace(/-/g, '/');
       } else if (freq === 'month') {
@@ -2247,7 +2284,7 @@ function getYearBorderWidth(year, latestYear) {
   var AUTO_REFRESH_INTERVAL = 5 * 60 * 1000; // 5 minutes
 
   function refreshData() {
-    // Fetch all 7 JSON sources in parallel (cache-busting query param)
+    // Fetch all 8 JSON sources in parallel (cache-busting query param)
     Promise.all([
       fetch('public/data.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : Promise.reject(); }),
       fetch('public/medium_long_liquidity.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : Promise.reject(); }),
@@ -2256,6 +2293,7 @@ function getYearBorderWidth(year, latestYear) {
       fetch('public/cd_rates.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : Promise.reject(); }),
       fetch('public/cd_net_financing.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : Promise.reject(); }),
       fetch('public/gov_monthly_net_financing.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : Promise.reject(); }),
+      fetch('public/gov_daily_net_payment.json?t=' + Date.now()).then(function (r) { return r.ok ? r.json() : Promise.reject(); }),
     ]).then(function (results) {
       var newData = results[0];
       var newLiquidity = results[1];
@@ -2264,6 +2302,7 @@ function getYearBorderWidth(year, latestYear) {
       var newCDRates = results[4];
       var newCDNetFin = results[5];
       var newGovMonthlyNF = results[6];
+      var newGovDailyNF = results[7];
 
       var changed = false;
 
@@ -2307,6 +2346,13 @@ function getYearBorderWidth(year, latestYear) {
       if (newGovMonthlyNF) {
         govMonthlyNFData = newGovMonthlyNF;
         renderGovMonthlyNFTable();
+      }
+
+      // Check gov daily net payment (政府债净缴款图表源数据)
+      if (newGovDailyNF && JSON.stringify(newGovDailyNF).length !== JSON.stringify(govDailyData || []).length) {
+        govDailyData = newGovDailyNF;
+        renderGovBondChart();
+        if (govTableVisible) renderGovBondTable();
       }
 
       // Re-render liquidity table
