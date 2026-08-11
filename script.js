@@ -837,7 +837,7 @@ function getYearBorderWidth(year, latestYear) {
     return Math.round(Math.round((fri - d) / 86400000) / 7);
   }
 
-  // 周频最新显示周的周五：默认为今天所在统计周（周六-周五）的周五；
+  // 日度/周频的最新显示边界（均为某个周五）：默认为今天所在统计周（周六-周五）的周五；
   // 若今天是周五（本周数据已完整），则向后多显示一周（下周周五）。
   function govLastWeeklyFriday() {
     var now = new Date();
@@ -849,12 +849,21 @@ function getYearBorderWidth(year, latestYear) {
 
   // 将日频底层数据按指定频率聚合为政府债净缴款。
   // 数据源：govDailyData（日度资金情况汇总.xlsx -> 政府债净缴款 sheet，A列日期/G列净缴款）。
-  // 周频口径：上周六至本周五为一周，横轴按周五日期标记；仅显示至今天所在周，
-  // 若今天为周五则额外显示下一周；更远未来的排期数据不显示。
+  // 口径规则：
+  //   周频：上周六至本周五为一周，横轴按周五日期标记；仅显示至今天所在周，
+  //         若今天为周五则额外显示下一周；更远未来的排期数据不显示。
+  //   日度：不显示周六周日，其数值并入下周一（周一=上周六至周一三日求和）；
+  //         周一至周四更新显示至当周周五，周五更新额外显示下周五个工作日。
+  //   月度/季度：只显示至当前周期，不包括未来周期。
   function aggregateGovBond(freq) {
     var map = {};
     if (!govDailyData) return [];
-    var lastFriStr = (freq === 'week') ? govLastWeeklyFriday() : null;
+    var now = new Date();
+    var todayStr = now.getFullYear() + '-' + govPad2(now.getMonth() + 1) + '-' + govPad2(now.getDate());
+    var lastFriStr = (freq === 'day' || freq === 'week') ? govLastWeeklyFriday() : null;
+    var curMonthStr = todayStr.substring(0, 7);
+    var curQ = Math.floor((parseInt(todayStr.substring(5, 7), 10) - 1) / 3) + 1;
+    var curQuarterStr = todayStr.substring(0, 4) + '-Q' + curQ;
     for (var i = 0; i < govDailyData.length; i++) {
       var r = govDailyData[i];
       var dateStr = r['\u65e5\u671f'];
@@ -862,8 +871,15 @@ function getYearBorderWidth(year, latestYear) {
       if (!dateStr || val === null || val === undefined) continue;
       var key, sortKey, label;
       if (freq === 'day') {
-        key = sortKey = dateStr;
-        label = dateStr.replace(/-/g, '/');
+        // 周六/周日并入下周一：周一净缴款 = 上周六至周一三日求和
+        var dd = govParseDate(dateStr);
+        var dow = dd.getDay();
+        if (dow === 6) dd.setDate(dd.getDate() + 2);
+        else if (dow === 0) dd.setDate(dd.getDate() + 1);
+        var dispStr = govDateToStr(dd);
+        if (dispStr > lastFriStr) continue; // 截断超出显示范围的未来日
+        key = sortKey = dispStr;
+        label = dispStr.replace(/-/g, '/');
       } else if (freq === 'week') {
         var friStr = govDateToStr(govWeekFriday(govParseDate(dateStr)));
         if (friStr > lastFriStr) continue; // 截断超出显示范围的未来周
@@ -871,10 +887,12 @@ function getYearBorderWidth(year, latestYear) {
         label = friStr.replace(/-/g, '/');
       } else if (freq === 'month') {
         key = sortKey = dateStr.substring(0, 7);
+        if (key > curMonthStr) continue; // 不包括未来月份
         label = key.replace('-', '/');
       } else { // quarter
         var q = Math.floor((parseInt(dateStr.substring(5, 7), 10) - 1) / 3) + 1;
         key = sortKey = dateStr.substring(0, 4) + '-Q' + q;
+        if (key > curQuarterStr) continue; // 不包括未来季度
         label = dateStr.substring(0, 4) + 'Q' + q;
       }
       if (!map[key]) map[key] = { sortKey: sortKey, label: label, value: 0 };
