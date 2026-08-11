@@ -1823,6 +1823,13 @@ function getYearBorderWidth(year, latestYear) {
       });
   }
 
+  // 返回日期 d 所属同业存单统计周（前一周周六至本周周五）的周五（周末日期）。
+  // 例：2026-08-08(周六) 至 2026-08-14(周五) 的数据归入同一周，横轴按 2026-08-14 显示。
+  function cdnfWeekFriday(d) {
+    var add = (5 - d.getDay() + 7) % 7; // 周日+5 ... 周五+0，周六+6
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate() + add);
+  }
+
   // 计算某日期在指定频率下所属桶的 key/sortKey/label
   function cdnfBucket(dateStr, freq) {
     var key, sortKey, label;
@@ -1830,7 +1837,7 @@ function getYearBorderWidth(year, latestYear) {
       key = sortKey = dateStr;
       label = dateStr.replace(/-/g, '/');
     } else if (freq === 'week') {
-      var friStr = govDateToStr(govWeekFriday(govParseDate(dateStr)));
+      var friStr = govDateToStr(cdnfWeekFriday(govParseDate(dateStr)));
       key = sortKey = friStr;
       label = friStr.replace(/-/g, '/');
     } else if (freq === 'month') {
