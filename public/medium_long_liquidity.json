@@ -44,7 +44,7 @@
   "data": [
     {
       "date": "2026-09",
-      "invest_3m": null,
+      "invest_3m": 5000,
       "invest_6m": null,
       "invest_1y": null,
       "mature_3m": 5000,
