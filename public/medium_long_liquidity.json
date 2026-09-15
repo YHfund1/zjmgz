@@ -45,7 +45,7 @@
     {
       "date": "2026-09",
       "invest_3m": 5000,
-      "invest_6m": null,
+      "invest_6m": 5000,
       "invest_1y": null,
       "mature_3m": 5000,
       "mature_6m": 5000,
