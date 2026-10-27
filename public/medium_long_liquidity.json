@@ -56,11 +56,11 @@
       "date": "2026-10",
       "invest_3m": 12000,
       "invest_6m": 7000,
-      "invest_1y": 14000,
+      "invest_1y": 7000,
       "mature_3m": 10000,
       "mature_6m": 5000,
       "mature_1y": 9000,
-      "net_total": 9000
+      "net_total": 2000
     },
     {
       "date": "2026-09",
