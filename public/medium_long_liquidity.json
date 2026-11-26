@@ -43,14 +43,24 @@
   ],
   "data": [
     {
+      "date": "2026-12",
+      "invest_3m": null,
+      "invest_6m": null,
+      "invest_1y": null,
+      "mature_3m": 5000,
+      "mature_6m": 6000,
+      "mature_1y": 4000,
+      "net_total": null
+    },
+    {
       "date": "2026-11",
       "invest_3m": 3000,
       "invest_6m": 2000,
-      "invest_1y": null,
+      "invest_1y": 8000.0,
       "mature_3m": 5000,
       "mature_6m": 3000,
       "mature_1y": 10000,
-      "net_total": null
+      "net_total": -5000
     },
     {
       "date": "2026-10",
@@ -201,16 +211,6 @@
       "mature_6m": 5000,
       "mature_1y": 3000,
       "net_total": 6000
-    },
-    {
-      "date": "2025-07",
-      "invest_3m": 8000,
-      "invest_6m": 6000,
-      "invest_1y": 4000.0,
-      "mature_3m": 7000,
-      "mature_6m": 5000,
-      "mature_1y": 3000,
-      "net_total": 3000
     }
   ]
 }
